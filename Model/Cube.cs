@@ -30,101 +30,104 @@ namespace Rubik.Model
         {
             get
             {
-                var n = Size / 2.0 - 0.5;
-
                 return true
-                    && FrontFaceSolved(n)
-                    && UpFaceSolved(n)
-                    && RightFaceSolved(n)
-                    && BackFaceSolved(n)
-                    && DownFaceSolved(n)
-                    && LeftFaceSolved(n)
+                    && FrontFaceSolved()
+                    && UpFaceSolved()
+                    && RightFaceSolved()
+                    && BackFaceSolved()
+                    && DownFaceSolved()
+                    && LeftFaceSolved()
                     ;
             }
         }
 
-        bool LeftFaceSolved(double n)
+        bool LeftFaceSolved()
         {
             var l = Cubelets
-                .Single(c => c.Position == new Point3D(-n, 0.0, 0.0))
+                .Single(c => c.Position == new Point3D(-OutmostLayer, 0.0, 0.0))
                 .FaceColors[Faces.Left]
                 ;
 
             return Cubelets
-                .Where(x => x.Position.X == -n)
+                .LeftFace(OutmostLayer)
                 .Select(x => x.FaceColors[Faces.Left])
                 .All(color => color == l)
                 ;
         }
 
-        bool DownFaceSolved(double n)
+        bool DownFaceSolved()
         {
             var d = Cubelets
-                .Single(c => c.Position == new Point3D(0.0, 0.0, -n))
+                .Single(c => c.Position == new Point3D(0.0, 0.0, -OutmostLayer))
                 .FaceColors[Faces.Down]
                 ;
 
             return Cubelets
-                .Where(x => x.Position.Z == -n)
+                .DownFace(OutmostLayer)
                 .Select(x => x.FaceColors[Faces.Down])
                 .All(color => color == d)
                 ;
         }
 
-        bool BackFaceSolved(double n)
+        bool BackFaceSolved()
         {
             var b = Cubelets
-                .Single(c => c.Position == new Point3D(0.0, -n, 0.0))
+                .Single(c => c.Position == new Point3D(0.0, -OutmostLayer, 0.0))
                 .FaceColors[Faces.Back]
                 ;
 
             return Cubelets
-                .Where(x => x.Position.Y == -n)
+                .BackFace(OutmostLayer)
                 .Select(x => x.FaceColors[Faces.Back])
                 .All(color => color == b)
                 ;
         }
 
-        bool RightFaceSolved(double n)
+        bool RightFaceSolved()
         {
             var r = Cubelets
-                .Single(c => c.Position == new Point3D(n, 0.0, 0.0))
+                .Single(c => c.Position == new Point3D(OutmostLayer, 0.0, 0.0))
                 .FaceColors[Faces.Right]
                 ;
 
             return Cubelets
-                .Where(x => x.Position.X == n)
+                .RightFace(OutmostLayer)
                 .Select(x => x.FaceColors[Faces.Right])
                 .All(color => color == r)
                 ;
         }
 
-        bool UpFaceSolved(double n)
+        bool UpFaceSolved()
         {
             var u = Cubelets
-                .Single(c => c.Position == new Point3D(0.0, 0.0, n))
+                .Single(c => c.Position == new Point3D(0.0, 0.0, OutmostLayer))
                 .FaceColors[Faces.Up]
                 ;
 
             return Cubelets
-                .Where(x => x.Position.Z == n)
+                .UpFace(OutmostLayer)
                 .Select(x => x.FaceColors[Faces.Up])
                 .All(color => color == u)
                 ;
         }
 
-        bool FrontFaceSolved(double n)
+        bool FrontFaceSolved()
         {
             var f = Cubelets
-                .Single(c => c.Position == new Point3D(0.0, n, 0.0))
+                .Single(c => c.Position == new Point3D(0.0, OutmostLayer, 0.0))
                 .FaceColors[Faces.Front]
                 ;
 
             return Cubelets
-                .Where(x => x.Position.Y == n)
+                .FrontFace(OutmostLayer)
                 .Select(x => x.FaceColors[Faces.Front])
                 .All(color => color == f)
                 ;
+        }
+
+        double OutmostLayer
+        {
+            get { return Size / 2.0 - 0.5; }
         }
 
         public void Run(string sequence)

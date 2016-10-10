@@ -1,9 +1,11 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Rubik.Model;
-using System.Windows.Media.Media3D;
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace Rubik.UnitTests
 {
@@ -37,7 +39,10 @@ namespace Rubik.UnitTests
         {
             Assert.IsTrue(Cube.Solved);
 
-            Cube.Run("U U U U");
+            for (int i = 0; i < 4; i++)
+            {
+                Cube.Run("U");
+            }
 
             Assert.IsTrue(Cube.Solved);
 
@@ -53,9 +58,19 @@ namespace Rubik.UnitTests
                 Cube.Run("R U R' U R U U R'");
             }
 
-            Scramble(Cube);
+            Assert.IsTrue(Cube.Solved);
 
-            Cube.Run("L' F' B2 U' F R D' B' L B' L D2 R' U2 F2 D2 B' R2");
+            for (int i = 0; i < 6; i++)
+            {
+                Cube.Run("F U R U' R' F'");
+            }
+
+            Assert.IsTrue(Cube.Solved);
+
+            for (int i = 0; i < 6; i++)
+            {
+                Cube.Run("F R U R' U' F'");
+            }
 
             Assert.IsTrue(Cube.Solved);
         }
@@ -63,6 +78,12 @@ namespace Rubik.UnitTests
         [TestMethod]
         public void UndoTest()
         {
+            Assert.IsTrue(Cube.Solved);
+
+            Scramble(Cube);
+
+            Cube.Run("L' F' B2 U' F R D' B' L B' L D2 R' U2 F2 D2 B' R2");
+
             Assert.IsTrue(Cube.Solved);
 
             var moves = "Z2 D' L' R' F R D2 U2 L' U' L U' U' U' F' U' F U R U' R' Y R U R' U' Y U' U' R U R' U r U r' R U R' U' r U' r'";
